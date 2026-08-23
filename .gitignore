@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.env
+snapshot.json
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+.DS_Store
+Thumbs.db

@@ -1,0 +1,71 @@
+{
+  "route": {
+    "name": "Campus Loop – Prototype Route",
+    "loop": true,
+    "stops": [
+      {
+        "id": "STOP-A",
+        "name": "Thirunagar  2nd",
+        "lat": 9.880645,
+        "lon": 78.059492,
+        "sequence": 1
+      },
+      {
+        "id": "STOP-B",
+        "name": "Thirunagar 3rd",
+        "lat": 9.882017,
+        "lon": 78.052025,
+        "sequence": 2
+      }
+    ],
+    "buses": [
+      {
+        "id": "BUS-01",
+        "name": "Shuttle 1",
+        "color": "#38bdf8"
+      }
+    ]
+  },
+  "network": {
+    "wifiSsid": "Motorola",
+    "wifiPasswordEnvVar": "motoedge50",
+    "mqttBrokerHost": "51f17b12accb415dac1f18177f022f78.s1.eu.hivemq.cloud",
+    "mqttBrokerPort": 8883,
+    "mqttTopicSighting": "aerotrack/sighting",
+    "mqttTopicHealthPrefix": "aerotrack/health/",
+    "mqttUseTls": true,
+    "mqttUsernameEnvVar": "AEROTRACK_MQTT_USERNAME",
+    "mqttPasswordEnvVar": "AEROTRACK_MQTT_PASSWORD"
+  },
+  "serialFallback": {
+    "enabled": false,
+    "port": "COM5",
+    "baudRate": 115200
+  },
+  "espnow": {
+    "channel": 1,
+    "broadcastIntervalMs": 1000
+  },
+  "rs485": {
+    "baudRate": 9600,
+    "dePin": 4,
+    "rePin": 5
+  },
+  "eta": {
+    "method": "interpolation",
+    "assumedSpeedKmph": 200
+  },
+  "dashboard": {
+    "refreshIntervalMs": 250,
+    "mapDefaultZoom": 15,
+    "staleAfterSeconds": 450,
+    "defaultCenter": {
+      "lat": 9.9252,
+      "lon": 78.1198
+    }
+  },
+  "admin": {
+    "username": "admin",
+    "password": "changeme"
+  }
+}
