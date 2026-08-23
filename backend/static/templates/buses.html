@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="page-heading"><div><span class="section-kicker">FLEET STATUS</span><h2>Buses</h2><p>Latest accepted sequence, stop transition, radio signal, and arrival estimate.</p></div><div class="metric-block"><b id="active-count">—</b><span>reporting live</span></div></section>
+<div id="buses-grid" class="card-grid"><div class="skeleton-card"></div></div>
+<div id="buses-empty" class="empty-page hidden"><h3>No buses configured</h3><p>Add a bus from the route section in Admin.</p><a class="button primary" href="/admin">Configure fleet</a></div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/buses.js') }}" defer></script>{% endblock %}

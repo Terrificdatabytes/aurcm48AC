@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<a class="back-link" href="/stops"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>All stops</a>
+<section class="detail-hero" data-stop-id="{{ stop.stopId }}" id="stop-detail-root">
+  <div><span class="sequence-tag">STOP {{ '%02d'|format(stop.sequence) }}</span><h2>{{ stop.name }}</h2><p class="mono">{{ stop.stopId }} · {{ '%.5f'|format(stop.lat) }}, {{ '%.5f'|format(stop.lon) }}</p></div>
+  <div class="detail-status" id="detail-status"><span></span><b>Checking relay</b></div>
+</section>
+<div class="detail-grid">
+  <section class="arrivals-board"><div class="panel-title"><div><span class="section-kicker">PREDICTED</span><h3>Next arrivals</h3></div><span class="live-tag">LIVE</span></div><div id="arrivals-list"><div class="skeleton-card short"></div></div></section>
+  <section class="relay-card"><span class="section-kicker">RELAY TELEMETRY</span><dl id="relay-telemetry"><div><dt>Last heartbeat</dt><dd>—</dd></div><div><dt>Link mode</dt><dd>—</dd></div><div><dt>Uptime</dt><dd>—</dd></div><div><dt>Noise floor</dt><dd>—</dd></div></dl></section>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/stop-detail.js') }}" defer></script>{% endblock %}
