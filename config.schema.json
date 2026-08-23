@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "config.schema.json",
+  "title": "AeroTrack configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["route", "network", "serialFallback", "espnow", "rs485", "eta", "dashboard", "admin"],
+  "properties": {
+    "route": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "loop", "stops", "buses"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "loop": {"type": "boolean"},
+        "stops": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["id", "name", "lat", "lon", "sequence"], "properties": {
+          "id": {"type": "string", "minLength": 1, "maxLength": 15},
+          "name": {"type": "string", "minLength": 1},
+          "lat": {"type": "number", "minimum": -90, "maximum": 90},
+          "lon": {"type": "number", "minimum": -180, "maximum": 180},
+          "sequence": {"type": "integer", "minimum": 0}
+        }}},
+        "buses": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["id", "name", "color"], "properties": {
+          "id": {"type": "string", "minLength": 1, "maxLength": 15},
+          "name": {"type": "string", "minLength": 1},
+          "color": {"type": "string", "pattern": "^#[0-9a-fA-F]{6}$"}
+        }}}
+      }
+    },
+    "network": {
+      "type": "object", "additionalProperties": false,
+      "required": ["wifiSsid", "wifiPasswordEnvVar", "mqttBrokerHost", "mqttBrokerPort", "mqttTopicSighting", "mqttTopicHealthPrefix"],
+      "properties": {
+        "wifiSsid": {"type": "string"},
+        "wifiPasswordEnvVar": {"type": "string", "minLength": 1},
+        "mqttBrokerHost": {"type": "string", "minLength": 1},
+        "mqttBrokerPort": {"type": "integer", "minimum": 1, "maximum": 65535},
+        "mqttTopicSighting": {"type": "string", "minLength": 1},
+        "mqttTopicHealthPrefix": {"type": "string", "minLength": 1},
+        "mqttUseTls": {"type": "boolean"},
+        "mqttUsernameEnvVar": {"type": "string"},
+        "mqttPasswordEnvVar": {"type": "string"}
+      }
+    },
+    "serialFallback": {
+      "type": "object", "additionalProperties": false,
+      "required": ["enabled", "port", "baudRate"],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "port": {"type": "string", "minLength": 1},
+        "baudRate": {"type": "integer", "minimum": 1200, "maximum": 2000000}
+      }
+    },
+    "espnow": {
+      "type": "object", "additionalProperties": false,
+      "required": ["channel", "broadcastIntervalMs"],
+      "properties": {
+        "channel": {"type": "integer", "minimum": 1, "maximum": 14},
+        "broadcastIntervalMs": {"type": "integer", "minimum": 100, "maximum": 60000}
+      }
+    },
+    "rs485": {
+      "type": "object", "additionalProperties": false,
+      "required": ["baudRate", "dePin", "rePin"],
+      "properties": {
+        "baudRate": {"type": "integer", "minimum": 1200, "maximum": 1000000},
+        "dePin": {"type": "integer", "minimum": 0, "maximum": 39},
+        "rePin": {"type": "integer", "minimum": 0, "maximum": 39}
+      }
+    },
+    "eta": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "assumedSpeedKmph"],
+      "properties": {
+        "method": {"type": "string", "enum": ["interpolation", "random_forest"]},
+        "assumedSpeedKmph": {"type": "number", "exclusiveMinimum": 0, "maximum": 200}
+      }
+    },
+    "dashboard": {
+      "type": "object", "additionalProperties": false,
+      "required": ["refreshIntervalMs", "mapDefaultZoom", "staleAfterSeconds", "defaultCenter"],
+      "properties": {
+        "refreshIntervalMs": {"type": "integer", "minimum": 250, "maximum": 60000},
+        "mapDefaultZoom": {"type": "integer", "minimum": 1, "maximum": 20},
+        "staleAfterSeconds": {"type": "integer", "minimum": 1, "maximum": 86400},
+        "defaultCenter": {"type": "object", "additionalProperties": false, "required": ["lat", "lon"], "properties": {
+          "lat": {"type": "number", "minimum": -90, "maximum": 90},
+          "lon": {"type": "number", "minimum": -180, "maximum": 180}
+        }}
+      }
+    },
+    "admin": {
+      "type": "object", "additionalProperties": false,
+      "required": ["username", "password"],
+      "properties": {
+        "username": {"type": "string", "minLength": 1},
+        "password": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}
