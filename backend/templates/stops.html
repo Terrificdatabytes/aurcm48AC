@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="page-heading"><div><span class="section-kicker">STOP NETWORK</span><h2>Stops</h2><p>Relay health, wired/wireless link mode, and last contact across the route.</p></div><div class="metric-block"><b id="online-count">—</b><span>online now</span></div></section>
+<div id="stops-grid" class="card-grid"><div class="skeleton-card"></div><div class="skeleton-card"></div></div>
+<div id="stops-empty" class="empty-page hidden"><h3>No stops configured</h3><p>Use Admin to add stops and place them on the map.</p><a class="button primary" href="/admin">Configure route</a></div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/stops.js') }}" defer></script>{% endblock %}

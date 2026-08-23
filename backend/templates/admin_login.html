@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="login-wrap"><section class="login-card"><div class="login-icon"><svg viewBox="0 0 24 24"><path d="M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5V11Zm7 4v2"/></svg></div><span class="section-kicker">RESTRICTED SETTINGS</span><h2>Administrator sign in</h2><p>Configuration changes affect the live route and data links immediately.</p><form id="login-form"><label>Username<input name="username" autocomplete="username" required autofocus></label><label>Password<input name="password" type="password" autocomplete="current-password" required></label><p id="login-error" class="form-error hidden"></p><button class="button primary wide" type="submit">Sign in</button></form><small>Prototype authentication only. Do not expose this service to a public network.</small></section></div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/admin-login.js') }}" defer></script>{% endblock %}

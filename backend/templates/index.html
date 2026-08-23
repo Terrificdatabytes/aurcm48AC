@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css', v='1.9.4') }}">
+{% endblock %}
+{% block content %}
+<section class="page-heading map-heading">
+  <div><span class="section-kicker">NETWORK OVERVIEW</span><h2>Live vehicle movement</h2><p>Sightings from the stop relay network, interpolated along the active route.</p></div>
+  <div class="legend"><span><i class="legend-bus"></i>Vehicle</span><span><i class="legend-stop"></i>Stop</span></div>
+</section>
+<div class="map-layout">
+  <section class="map-panel">
+    <div id="map" aria-label="Live route map"></div>
+    <div class="map-empty hidden" id="map-empty"><strong>No stops configured</strong><p>Add the first route stop from Admin to begin tracking.</p><a href="/admin">Open configuration</a></div>
+    <div class="map-error hidden" id="map-error">Map tiles are unavailable. Live status remains visible in the vehicle panel.</div>
+  </section>
+  <aside class="vehicle-panel">
+    <div class="panel-title"><div><span class="section-kicker">FLEET</span><h3>Vehicles in service</h3></div><span class="count" id="bus-count">0</span></div>
+    <div id="live-bus-list" class="live-list"><div class="skeleton-card"></div><div class="skeleton-card short"></div></div>
+    <div class="panel-note"><svg viewBox="0 0 24 24"><path d="M12 8v4l2 2m7-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg><p>Positions glide between stop sightings using the configured travel speed. Stale vehicles stop moving.</p></div>
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js', v='1.9.4') }}" defer></script>
+<script src="{{ url_for('static', filename='js/map.js', v='2') }}" defer></script>
+{% endblock %}
