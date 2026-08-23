@@ -7,13 +7,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   let stopsById = {}, stopMarkers = {}, busMarkers = {}, liveBuses = [];
   let firstCenter = true;
 
-  // Flip this to false for an online demo to use the CARTO basemap instead.
-  // When true, tiles are read from backend/static/tiles/ (see
-  // tools/download_offline_tiles.py) so the map works with zero internet --
-  // only run the download script once beforehand, on a machine that does
-  // have internet.
-  const OFFLINE_TILES = true;
-
   // Create the map immediately. Leaflet is served locally, so the UI controls do
   // not wait on a CDN before the API requests can begin.
   if (window.L) {
@@ -25,13 +18,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       markerZoomAnimation: false
     });
     let tileErrors = 0;
-    const tileOptions = OFFLINE_TILES
-      ? { maxZoom: 20, maxNativeZoom: 17, keepBuffer: 1, updateWhenIdle: true, updateWhenZooming: false, attribution: '&copy; OpenStreetMap contributors' }
-      : { maxZoom: 20, subdomains: 'abcd', keepBuffer: 1, updateWhenIdle: true, updateWhenZooming: false, attribution: '&copy; OpenStreetMap &copy; CARTO' };
-    const tileUrl = OFFLINE_TILES
-      ? '/static/tiles/{z}/{x}/{y}.png'
-      : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
-    L.tileLayer(tileUrl, tileOptions).addTo(map)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+      maxZoom: 20,
+      subdomains: 'abcd',
+      keepBuffer: 1,
+      updateWhenIdle: true,
+      updateWhenZooming: false,
+      attribution: '&copy; OpenStreetMap &copy; CARTO'
+    }).addTo(map)
       .on('tileload', () => { tileErrors = 0; mapError.classList.add('hidden'); })
       .on('tileerror', () => {
         tileErrors += 1;
