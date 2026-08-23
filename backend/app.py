@@ -17,6 +17,15 @@ from tracker import TransitTracker
 BASE_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = BASE_DIR.parent
 
+# This must run at import time, not inside `if __name__ == "__main__":`.
+# Gunicorn imports this module (`app:app`) — it never executes it as a
+# script — so a basicConfig() gated behind that guard never runs, and every
+# LOG.info/LOG.warning call in this app falls back to the default handler-less
+# logger, which the root logger drops for anything below WARNING. That is why
+# nothing has shown up in Render's logs.
+logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
+LOG = logging.getLogger("aerotrack.app")
+
 
 def create_app(
     *,
@@ -47,12 +56,15 @@ def create_app(
     app.extensions["aerotrack_tracker"] = tracker
 
     ingestion = None
+    LOG.info("create_app: start_background=%s pid=%s", start_background, os.getpid())
     if start_background:
         from ingestion import IngestionSupervisor
         ingestion = IngestionSupervisor(store, tracker)
         ingestion.start()
         app.extensions["aerotrack_ingestion"] = ingestion
         atexit.register(ingestion.stop)
+    else:
+        LOG.warning("create_app: background ingestion disabled, no mqtt/serial workers will run")
 
     @app.after_request
     def disable_api_cache(response: Any) -> Any:
@@ -238,7 +250,7 @@ def create_app(
     return app
 
 
-logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
+LOG.info("app.py imported, pid=%s, __name__=%s", os.getpid(), __name__)
 app = create_app(start_background=os.environ.get("AEROTRACK_DISABLE_INGESTION") != "1")
 
 if __name__ == "__main__":
