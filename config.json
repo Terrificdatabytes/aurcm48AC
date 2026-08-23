@@ -56,9 +56,9 @@
     "assumedSpeedKmph": 200
   },
   "dashboard": {
-    "refreshIntervalMs": 250,
+    "refreshIntervalMs": 3000,
     "mapDefaultZoom": 15,
-    "staleAfterSeconds": 450,
+    "staleAfterSeconds": 1000,
     "defaultCenter": {
       "lat": 9.9252,
       "lon": 78.1198
