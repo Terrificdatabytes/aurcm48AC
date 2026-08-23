@@ -238,8 +238,8 @@ def create_app(
     return app
 
 
+logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
 app = create_app(start_background=os.environ.get("AEROTRACK_DISABLE_INGESTION") != "1")
 
 if __name__ == "__main__":
-    logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
     app.run(host=os.environ.get("HOST", "0.0.0.0"), port=int(os.environ.get("PORT", "5000")), debug=os.environ.get("FLASK_DEBUG") == "1", use_reloader=False)
