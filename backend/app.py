@@ -17,14 +17,21 @@ from tracker import TransitTracker
 BASE_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = BASE_DIR.parent
 
-# This must run at import time, not inside `if __name__ == "__main__":`.
-# Gunicorn imports this module (`app:app`) — it never executes it as a
-# script — so a basicConfig() gated behind that guard never runs, and every
-# LOG.info/LOG.warning call in this app falls back to the default handler-less
-# logger, which the root logger drops for anything below WARNING. That is why
-# nothing has shown up in Render's logs.
-logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
+# This must run at import time, not inside `if __name__ == "__main__":`,
+# because gunicorn imports this module (`app:app`) rather than executing it
+# as a script, so the `__main__` guard never runs there.
+#
+# force=True matters too: gunicorn configures its own logging (the
+# gunicorn.error / gunicorn.access loggers) on the root logger before it
+# ever imports app.py. logging.basicConfig() is a documented no-op if the
+# root logger already has handlers attached — which is exactly gunicorn's
+# situation — so a plain basicConfig() call here is silently swallowed and
+# every LOG.info/LOG.warning call in this app goes nowhere. force=True
+# (Python 3.8+) strips any existing root handlers first, so our config
+# actually takes effect regardless of what gunicorn already set up.
+logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"), force=True)
 LOG = logging.getLogger("aerotrack.app")
+LOG.info("logging configured (force=True), root handlers=%s", logging.root.handlers)
 
 
 def create_app(
