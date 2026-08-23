@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sighting.schema.json",
+  "title": "AeroTrack sighting",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "stopId", "busId", "rssi", "seq", "gatewayReceivedAtMs"],
+  "properties": {
+    "schemaVersion": {"const": "1.0"},
+    "stopId": {"type": "string", "minLength": 1, "maxLength": 15},
+    "busId": {"type": "string", "minLength": 1, "maxLength": 15},
+    "rssi": {"type": "integer", "minimum": -127, "maximum": 20},
+    "seq": {"type": "integer", "minimum": 0},
+    "gatewayReceivedAtMs": {"type": "integer", "minimum": 0}
+  }
+}

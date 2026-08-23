@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "stop_health.schema.json",
+  "title": "AeroTrack stop health",
+  "type": "object",
+  "required": ["schemaVersion", "stopId", "uptimeSec", "linkMode", "timestampMs"],
+  "properties": {
+    "schemaVersion": {"const": "1.0"},
+    "stopId": {"type": "string", "minLength": 1, "maxLength": 15},
+    "uptimeSec": {"type": "integer", "minimum": 0},
+    "linkMode": {"type": "string", "enum": ["rs485", "espnow_direct", "uart_direct"]},
+    "rssiFloorNoise": {"type": "integer", "minimum": -127, "maximum": 20},
+    "timestampMs": {"type": "integer", "minimum": 0}
+  },
+  "additionalProperties": true
+}
