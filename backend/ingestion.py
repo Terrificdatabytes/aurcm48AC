@@ -27,10 +27,12 @@ class IngestionSupervisor:
         self.threads: list[threading.Thread] = []
 
     def start(self) -> None:
+        LOG.info("IngestionSupervisor.start() called, pid=%s", os.getpid())
         for name, target in (("aerotrack-mqtt", self._mqtt_worker), ("aerotrack-serial", self._serial_worker)):
             thread = threading.Thread(name=name, target=target, daemon=True)
             thread.start()
             self.threads.append(thread)
+            LOG.info("Spawned thread %s (ident=%s, alive=%s)", name, thread.ident, thread.is_alive())
 
     def stop(self) -> None:
         self.stop_event.set()
@@ -38,6 +40,7 @@ class IngestionSupervisor:
             thread.join(timeout=3)
 
     def _mqtt_worker(self) -> None:
+        LOG.info("_mqtt_worker: thread entered, pid=%s, thread=%s", os.getpid(), threading.current_thread().name)
         active_signature: tuple[Any, ...] | None = None
         client: mqtt.Client | None = None
         while not self.stop_event.is_set():
@@ -117,6 +120,7 @@ class IngestionSupervisor:
         return client
 
     def _serial_worker(self) -> None:
+        LOG.info("_serial_worker: thread entered, pid=%s, thread=%s", os.getpid(), threading.current_thread().name)
         connection: serial.Serial | None = None
         active_signature: tuple[Any, ...] | None = None
         while not self.stop_event.is_set():
