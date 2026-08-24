@@ -43,7 +43,7 @@
     "baudRate": 115200
   },
   "espnow": {
-    "channel": 1,
+    "channel": 11,
     "broadcastIntervalMs": 1000
   },
   "rs485": {
