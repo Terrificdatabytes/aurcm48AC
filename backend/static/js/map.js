@@ -18,13 +18,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       markerZoomAnimation: false
     });
     let tileErrors = 0;
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
-      maxZoom: 20,
-      subdomains: 'abcd',
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 16,
       keepBuffer: 1,
       updateWhenIdle: true,
       updateWhenZooming: false,
-      attribution: '&copy; OpenStreetMap &copy; CARTO'
+      attribution: '&copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors'
     }).addTo(map)
       .on('tileload', () => { tileErrors = 0; mapError.classList.add('hidden'); })
       .on('tileerror', () => {
